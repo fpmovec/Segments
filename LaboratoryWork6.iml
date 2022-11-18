@@ -52,5 +52,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="junit" level="project" />
+    <orderEntry type="library" name="github.junrar" level="project" />
+    <orderEntry type="library" name="guicedee.services.commons.codec" level="project" />
   </component>
 </module>

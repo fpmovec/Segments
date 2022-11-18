@@ -1,3 +1,5 @@
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -33,9 +35,10 @@ public class Segments {
             System.out.println("Key: " + pair.getKey() + " Value: " + pair.getValue());
         }
        System.out.println(isIntersect);
+
        ZIPWriter(XMLWriter(isIntersect), "xmlArchive");
        JarWriter(XMLWriter(isIntersect), "JarArchive");
-       JsonWriter(isIntersect);
+       JsonWriter(MD5Hashing(String.valueOf(isIntersect)));
     }
  public static double[] JsonRead(String path) throws IOException, ParseException {
        double[] array = new double[8];
@@ -52,7 +55,7 @@ public class Segments {
      array[7] = Double.parseDouble((String) jo.get("pointTwoY1"));
         return array;
  }
-    public static String JsonWriter(boolean isIntersect) throws IOException {
+    public static String JsonWriter(String isIntersect) throws IOException {
         JSONObject json = new JSONObject();
         json.put("IsIntersect", isIntersect);
         FileWriter out = new FileWriter("E:\\JSONResult.json");
@@ -86,6 +89,7 @@ public class Segments {
         fis.close();
         zipOutputStream.close();
     }
+
     public static void ZIPWriter(String filePath, String name) throws IOException
     {
         ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream("E:\\" + name + ".zip"));
@@ -97,6 +101,10 @@ public class Segments {
         zipOutputStream.write(buffer);
         fis.close();
         zipOutputStream.close();
+    }
+    public static String MD5Hashing(String string)
+    {
+        return DigestUtils.md5Hex(string);
     }
  public static boolean WhatDoesSheDo(double[] valuesArray, TreeMap<String, SegmentInfo> _segmentsTreeMap)
  {
