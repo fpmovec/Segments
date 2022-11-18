@@ -4,7 +4,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.*;
 import java.util.*;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -16,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 
 public class Segments {
 
@@ -33,6 +34,7 @@ public class Segments {
         }
        System.out.println(isIntersect);
        ZIPWriter(XMLWriter(isIntersect), "xmlArchive");
+       JarWriter(XMLWriter(isIntersect), "JarArchive");
        JsonWriter(isIntersect);
     }
  public static double[] JsonRead(String path) throws IOException, ParseException {
@@ -58,6 +60,7 @@ public class Segments {
         out.close();
         return "E:\\JSONResult.json";
     }
+
     public static String XMLWriter(boolean isIntersect) throws IOException, XMLStreamException {
         XMLOutputFactory output = XMLOutputFactory.newInstance();
         String fileName = "E:\\XMLResult.xml";
@@ -70,6 +73,18 @@ public class Segments {
         writer.flush();
 
         return fileName;
+    }
+
+    public static void JarWriter(String filePath, String name) throws IOException {
+        JarOutputStream zipOutputStream = new JarOutputStream(new FileOutputStream("E:\\" + name + ".jar"));
+        FileInputStream fis = new FileInputStream(filePath);
+        JarEntry zipEntry = new JarEntry("Result.xml");
+        zipOutputStream.putNextEntry(zipEntry);
+        byte[] buffer = new byte[fis.available()];
+        fis.read(buffer);
+        zipOutputStream.write(buffer);
+        fis.close();
+        zipOutputStream.close();
     }
     public static void ZIPWriter(String filePath, String name) throws IOException
     {
